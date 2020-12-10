@@ -10,12 +10,22 @@ func ReadInput(filename string) string {
 	return string(content)
 }
 
-func ConvertStringArrToIntArr(numbers []string) []int64 {
+func ConvertStringArrToInt64Arr(numbers []string) []int64 {
 	convertedNumber := []int64{}
 
 	for _, num := range numbers {
 		numb, _ := strconv.Atoi(num)
 		convertedNumber = append(convertedNumber, int64(numb))
+	}
+	return convertedNumber
+}
+
+func ConvertStringArrToIntArr(numbers []string) []int {
+	convertedNumber := []int{}
+
+	for _, num := range numbers {
+		numb, _ := strconv.Atoi(num)
+		convertedNumber = append(convertedNumber, numb)
 	}
 	return convertedNumber
 }

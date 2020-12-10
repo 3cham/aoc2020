@@ -18,7 +18,7 @@ func isValidPassword1(line string) bool{
 	word := elem[1]
 	char := elem[0][len(elem[0]) - 1]
 	rangeString := elem[0][:len(elem[0]) - 2]
-	rangeCount := utils.ConvertStringArrToIntArr(strings.Split(rangeString, "-"))
+	rangeCount := utils.ConvertStringArrToInt64Arr(strings.Split(rangeString, "-"))
 	var count int64 = 0
 	for i := 0; i < len(word); i++{
 		if word[i] == char {
@@ -33,7 +33,7 @@ func isValidPassword2(line string) bool{
 	word := elem[1]
 	char := elem[0][len(elem[0]) - 1]
 	rangeString := elem[0][:len(elem[0]) - 2]
-	rangeCount := utils.ConvertStringArrToIntArr(strings.Split(rangeString, "-"))
+	rangeCount := utils.ConvertStringArrToInt64Arr(strings.Split(rangeString, "-"))
 	return (word[rangeCount[0] - 1] == char || word[rangeCount[1] - 1] == char) && word[rangeCount[0] - 1] != word[rangeCount[1] - 1]
 }
 

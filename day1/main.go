@@ -35,7 +35,7 @@ func find3Product(numbers []int64) int64 {
 func main()  {
 	path, _ := filepath.Abs("./input.txt")
 	content := utils.ReadInput(path)
-	numbers := utils.ConvertStringArrToIntArr(strings.Split(content, "\n"))
+	numbers := utils.ConvertStringArrToInt64Arr(strings.Split(content, "\n"))
 	println(findProduct(numbers))
 	println(find3Product(numbers))
 }

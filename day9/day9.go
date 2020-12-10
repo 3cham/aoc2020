@@ -19,7 +19,7 @@ func main() {
 
 func findSumtoInvalid(content string, invalidNumber int64) int64 {
 	lines := strings.Split(content, "\n")
-	numbers := utils.ConvertStringArrToIntArr(lines)
+	numbers := utils.ConvertStringArrToInt64Arr(lines)
 	start := 0
 	end := 0
 	for invalidNumber != 0 && end < len(lines) {
@@ -48,7 +48,7 @@ func findSumtoInvalid(content string, invalidNumber int64) int64 {
 
 func findInvalidNumber(content string, preamble int) int64 {
 	lines := strings.Split(content, "\n")
-	numbers := utils.ConvertStringArrToIntArr(lines)
+	numbers := utils.ConvertStringArrToInt64Arr(lines)
 
 	for i := preamble; i < len(numbers); i++ {
 		found := false
