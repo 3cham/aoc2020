@@ -98,7 +98,7 @@ func findTerminatedValue(lines []string, pos int, changed bool, currentValue int
 		}
 
 		if !changed {
-			lines[pos] = switchIns(ins) + " " + op + string(val)
+			lines[pos] = switchIns(ins) + " " + op + fmt.Sprintf("%d",val)
 			_, newPos := update(currentValue, pos, lines[pos])
 			newValue, found := findTerminatedValue(lines, newPos, true, currentValue)
 			if found {
