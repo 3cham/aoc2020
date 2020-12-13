@@ -41,14 +41,16 @@ func lcm(x, y int64) int64 {
 }
 
 func find(x, y, step, remain int64) int64 {
-	current := int64(0)
+	newRemain := (remain - x % y + y) % y
+	current := step % y
+	count := int64(0)
 	for {
-		if (x+current)%y == remain {
+		if (current * count) % y == newRemain {
 			break
 		}
-		current += step
+		count += 1
 	}
-	return x + current
+	return count * step + x
 }
 
 func findEarliestPossibleTimestamp(busId []int64) int64 {
@@ -57,7 +59,8 @@ func findEarliestPossibleTimestamp(busId []int64) int64 {
 	for index, val := range busId {
 		println(current, index, val)
 		if index > 0 && val != 0 {
-			current = find(current, val, step, val - int64(index))
+			remain := int64(index) % val
+			current = find(current, val, step, val - int64(remain))
 			step = lcm(val, step)
 		}
 	}
