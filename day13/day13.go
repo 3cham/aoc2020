@@ -21,10 +21,10 @@ func getFirstTimestamp(content string) int64 {
 	return findEarliestPossibleTimestamp(busId)
 }
 
-// find least common divisor
-func lcd(x, y int64) int64 {
+// find least common multiple
+func lcm(x, y int64) int64 {
 	result := x * y
-	for x > 0 || y > 0 {
+	for x > 0 && y > 0 {
 		if x > y {
 			x = x % y
 		} else {
