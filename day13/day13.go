@@ -60,7 +60,7 @@ func findEarliestPossibleTimestamp(busId []int64) int64 {
 		println(current, index, val)
 		if index > 0 && val != 0 {
 			remain := int64(index) % val
-			current = find(current, val, step, val - int64(remain))
+			current = find(current, val, step, val - remain)
 			step = lcm(val, step)
 		}
 	}
