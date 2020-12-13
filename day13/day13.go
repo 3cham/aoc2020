@@ -16,39 +16,58 @@ func main() {
 
 func getFirstTimestamp(content string) int64 {
 	lines := strings.Split(content, "\n")
-	bus := strings.Split(strings.ReplaceAll(lines[1], "x","0"), ",")
+	bus := strings.Split(strings.ReplaceAll(lines[1], "x", "0"), ",")
 	busId := utils.ConvertStringArrToInt64Arr(bus)
 	return findEarliestPossibleTimestamp(busId)
 }
 
-// find least common multiple
-func lcm(x, y int64) int64 {
-	result := x * y
+func gcd(x, y int64) int64 {
 	for x > 0 && y > 0 {
 		if x > y {
-			x = x % y
+			x %= y
 		} else {
-			y = y % x
+			y %= x
 		}
 	}
 	if x > 0 {
-		return result / x
-	} else {
-		return result / y
+		return x
 	}
+	return y
+}
+
+// find least common multiple
+func lcm(x, y int64) int64 {
+	return x * y / gcd(x, y)
+}
+
+func find(x, y, step, remain int64) int64 {
+	current := int64(0)
+	for {
+		if (x+current)%y == remain {
+			break
+		}
+		current += step
+	}
+	return x + current
 }
 
 func findEarliestPossibleTimestamp(busId []int64) int64 {
-	//for _, val := range busId {
-	//
-	//}
-	return 0
+	current := busId[0]
+	step := current
+	for index, val := range busId {
+		println(current, index, val)
+		if index > 0 && val != 0 {
+			current = find(current, val, step, val - int64(index))
+			step = lcm(val, step)
+		}
+	}
+	return current
 }
 
 func getFirstBus(content string) int {
 	lines := strings.Split(content, "\n")
 	timestamp, _ := strconv.Atoi(lines[0])
-	bus := strings.ReplaceAll(lines[1], "x,","")
+	bus := strings.ReplaceAll(lines[1], "x,", "")
 	bus = strings.ReplaceAll(bus, "x", "")
 	busId := utils.ConvertStringArrToIntArr(strings.Split(bus, ","))
 	return findBusBasedOnTimestamp(timestamp, busId)
@@ -58,10 +77,10 @@ func findBusBasedOnTimestamp(timestamp int, busId []int) int {
 	max := -1
 	result := 0
 	for _, bus := range busId {
-		if timestamp % bus > max {
+		if timestamp%bus > max {
 			max = timestamp % bus
 			result = (bus - max) * bus
-		} else if timestamp % bus == 0 {
+		} else if timestamp%bus == 0 {
 			return 0
 		}
 	}
