@@ -11,6 +11,38 @@ func main() {
 	path := "/Users/tdang/go/src/github.com/3cham/aoc2020/day13/input.txt"
 	content := utils.ReadInput(path)
 	fmt.Println(getFirstBus(content))
+	fmt.Println(getFirstTimestamp(content))
+}
+
+func getFirstTimestamp(content string) int64 {
+	lines := strings.Split(content, "\n")
+	bus := strings.Split(strings.ReplaceAll(lines[1], "x","0"), ",")
+	busId := utils.ConvertStringArrToInt64Arr(bus)
+	return findEarliestPossibleTimestamp(busId)
+}
+
+// find least common divisor
+func lcd(x, y int64) int64 {
+	result := x * y
+	for x > 0 || y > 0 {
+		if x > y {
+			x = x % y
+		} else {
+			y = y % x
+		}
+	}
+	if x > 0 {
+		return result / x
+	} else {
+		return result / y
+	}
+}
+
+func findEarliestPossibleTimestamp(busId []int64) int64 {
+	//for _, val := range busId {
+	//
+	//}
+	return 0
 }
 
 func getFirstBus(content string) int {
