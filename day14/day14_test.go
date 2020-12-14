@@ -40,3 +40,33 @@ func TestUpdateValue(t *testing.T) {
 		})
 	}
 }
+
+func TestUpdateAddress(t *testing.T) {
+	testCases := []struct {
+		mask string
+		address int64
+		expected []int64
+	}{
+		{"000000000000000000000000000000X1001X", 42, []int64{26,27,58,59}},
+		{"00000000000000000000000000000000X0XX", 26, []int64{16,17,18,19,24,25,26,27}},
+	}
+
+	for _, test := range testCases {
+		t.Run("updateAddress should return correct result", func(t *testing.T) {
+			newAddr := updateAddress(test.address, test.mask)
+			for _, add := range test.expected {
+				found := false
+				for _, gotAddr := range newAddr {
+					if gotAddr == add {
+						found = true
+						break
+					}
+				}
+				if !found {
+					t.Fatalf("%d address not found from generated addresses", add)
+				}
+			}
+		})
+
+	}
+}
