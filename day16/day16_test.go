@@ -9,7 +9,7 @@ func checkIn(t *testing.T, c Constraint, constraints []Constraint) {
 	t.Helper()
 	found := false
 	for _, cons := range constraints {
-		if cons.min == c.min && cons.max == c.max {
+		if cons.name == c.name && cons.min == c.min && cons.max == c.max {
 			found = true
 			break
 		}
@@ -24,10 +24,10 @@ func TestParseConstraints(t *testing.T)  {
 		if len(constraint) != 4 {
 			t.Fatalf("Wrong constraint parsed")
 		}
-		checkIn(t, Constraint{1,3}, constraint)
-		checkIn(t, Constraint{5,7}, constraint)
-		checkIn(t, Constraint{6,11}, constraint)
-		checkIn(t, Constraint{33,44}, constraint)
+		checkIn(t, Constraint{"class",1,3}, constraint)
+		checkIn(t, Constraint{"class",5,7}, constraint)
+		checkIn(t, Constraint{"row", 6,11}, constraint)
+		checkIn(t, Constraint{"row", 33,44}, constraint)
 	})
 }
 
