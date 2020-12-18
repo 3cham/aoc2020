@@ -10,14 +10,15 @@ import (
 func main() {
 	path := "/Users/tdang/go/src/github.com/3cham/aoc2020/day18/input.txt"
 	content := utils.ReadInput(path)
-	fmt.Println("Result is: ", getSumExpressions(content))
+	fmt.Println("Result is: ", getSumExpressions(content, evaluate))
+	fmt.Println("Result is: ", getSumExpressions(content, evaluateWithPrio))
 }
 
-func getSumExpressions(content string) int {
+func getSumExpressions(content string, evalFunc func(string) int) int {
 	lines := strings.Split(content, "\n")
 	sum := 0
 	for _, line := range lines {
-		sum += evaluate(line)
+		sum += evalFunc(line)
 	}
 	return sum
 }
@@ -53,6 +54,62 @@ func evaluate(line string) int {
 		}
 	}
 	return result
+}
+
+func findPlusOp(line string) (start int, end int) {
+	start, end = -1, -1
+	pos := -1
+	for index, char := range line {
+		if char == '+' {
+			pos = index
+			break
+		}
+	}
+	if pos == -1 {
+		return
+	}
+	for i := pos - 1; i >= 0; i-- {
+		if i == 0 {
+			start = 0
+			break
+		}
+		if line[i] == '+' || line[i] == '*' {
+			start = i + 2
+			break
+		}
+	}
+	for i := pos + 1; i < len(line); i++ {
+		if i == len(line) - 1 {
+			end = i
+			break
+		}
+		if line[i] == '+' || line[i] == '*' {
+			end = i - 2
+			break
+		}
+	}
+	return
+}
+
+func evaluateWithPrio(line string) int {
+	for {
+		start, end := findDeepestParentheses(line)
+		if start == -1 {
+			break
+		}
+		value := evaluateWithPrio(line[start + 1:end])
+		line = replaceEval(line, value, start, end)
+	}
+	for {
+		start, end := findPlusOp(line)
+		if start == -1 {
+			break
+		}
+		value := evaluate(line[start:end+1])
+		line = replaceEval(line, value, start, end)
+	}
+
+	return evaluate(line)
 }
 
 func replaceEval(line string, value, start int, end int) string {

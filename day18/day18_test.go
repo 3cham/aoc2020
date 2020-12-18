@@ -45,7 +45,6 @@ func TestFindDeepestParentheses(t *testing.T)  {
 	}
 }
 
-
 func TestEvaluate(t *testing.T)  {
 	testCases := []struct{
 		expression string
@@ -66,6 +65,53 @@ func TestEvaluate(t *testing.T)  {
 
 			if result != test.expected {
 				t.Fatalf("Wrong result, expected: %d, got: %d", test.expected, result)
+			}
+		})
+	}
+}
+
+func TestEvaluateWithPrio(t *testing.T)  {
+	testCases := []struct{
+		expression string
+		expected int
+	}{
+		{"1", 1},
+		{"10", 10},
+		{"10 + 1", 11},
+		{"10 + 1 * 2", 22},
+		{"10 + (1 * 2)", 12},
+		{"10 * 1 + 2", 30},
+
+		{"5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", 669060},
+		//{"1 + 2 * 3 + 4 * 5 + 6", 71},
+		//{"((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", 13632},
+	}
+	for _, test := range testCases {
+		t.Run("evaluateWithPrio should return correct result", func(t *testing.T) {
+			result := evaluateWithPrio(test.expression)
+
+			if result != test.expected {
+				t.Fatalf("Wrong result, expected: %d, got: %d", test.expected, result)
+			}
+		})
+	}
+}
+
+func TestPlusOp(t *testing.T) {
+	testCases := []struct{
+		expression string
+		start, end int
+	}{
+		{"10 + 1", 0, 5},
+		{"10 + 1 * 2", 0, 5},
+		{"10 * 1 + 2", 5,9},
+	}
+	for _, test := range testCases {
+		t.Run("findPlusOp should return correct result", func(t *testing.T) {
+			start, end := findPlusOp(test.expression)
+
+			if start != test.start || end != test.end {
+				t.Fatalf("Wrong result, expected: (%d, %d), got: (%d, %d)", test.start, test.end, start, end)
 			}
 		})
 	}
